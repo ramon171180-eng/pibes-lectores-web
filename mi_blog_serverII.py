@@ -187,6 +187,7 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
         super().do_GET()
 
 
-with socketserver.TCPServer(("", PORT), BlogHandler) as httpd:
+with socketserver.TCPServer(("0.0.0.0", PORT), BlogHandler) as httpd:
     print(f"Servidor funcionando en http://localhost:{PORT}")
+
     httpd.serve_forever()
