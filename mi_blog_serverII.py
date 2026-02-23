@@ -40,33 +40,37 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
                         <style>
                             body {{
                                 margin: 0;
-                                font-family: 'Segoe UI', sans-serif;
-                                background: linear-gradient(135deg, #eef2f3, #dfe9f3);
-                                text-align: center;
+                                font-family: 'Georgia', serif;
+                                background: #f8f6f2;
+                                animation: fadeIn 1s ease-in-out;
                             }}
-                            .visor-container {{
-                                width: 90%;
-                                margin: 40px auto;
+
+                            @keyframes fadeIn {{
+                                from {{ opacity: 0; }}
+                                to {{ opacity: 1; }}
                             }}
-                            iframe {{
-                                width: 100%;
-                                height: 85vh;
-                                border: none;
-                                border-radius: 15px;
-                                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-                            }}
+
                             .volver {{
                                 display: inline-block;
-                                margin: 25px;
+                                margin: 30px;
                                 padding: 12px 25px;
-                                background: #2a5298;
+                                background: #2c3e50;
                                 color: white;
                                 text-decoration: none;
-                                border-radius: 8px;
+                                border-radius: 6px;
                                 transition: 0.3s;
                             }}
+
                             .volver:hover {{
-                                background: #1e3c72;
+                                background: #1a252f;
+                            }}
+
+                            iframe {{
+                                width: 90%;
+                                height: 85vh;
+                                border: none;
+                                border-radius: 10px;
+                                box-shadow: 0 10px 30px rgba(0,0,0,0.15);
                             }}
                         </style>
                     </head>
@@ -74,7 +78,7 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
 
                         <a class="volver" href="/">← Volver al sitio</a>
 
-                        <div class="visor-container">
+                        <div style="text-align:center;">
                             <iframe src="/pdfs/{archivo}"></iframe>
                         </div>
 
@@ -108,33 +112,47 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
             <html>
             <head>
                 <meta charset="UTF-8">
-                <title>Pibes Lectores - Independiente</title>
+                <title>Pibes Lectores</title>
+
                 <style>
+
                     body {
                         margin: 0;
-                        font-family: 'Segoe UI', sans-serif;
-                        background: linear-gradient(135deg, #eef2f3, #dfe9f3);
+                        font-family: 'Georgia', serif;
+                        background: #f8f6f2;
                         color: #2c3e50;
+                        overflow-x: hidden;
                     }
 
                     header {
-                        background: linear-gradient(90deg, #1e3c72, #2a5298);
-                        color: white;
-                        padding: 60px 20px;
+                        padding: 100px 20px;
                         text-align: center;
-                        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                        background: #ffffff;
+                        animation: slideDown 1.2s ease-out;
                     }
 
                     header h1 {
+                        font-size: 48px;
                         margin: 0;
-                        font-size: 42px;
-                        letter-spacing: 2px;
+                        letter-spacing: 3px;
                     }
 
                     header p {
-                        opacity: 0.9;
-                        margin-top: 10px;
                         font-style: italic;
+                        margin-top: 15px;
+                        font-size: 18px;
+                        opacity: 0.7;
+                    }
+
+                    @keyframes slideDown {
+                        from {
+                            transform: translateY(-40px);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateY(0);
+                            opacity: 1;
+                        }
                     }
 
                     .container {
@@ -145,16 +163,26 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
 
                     .post {
                         background: white;
-                        padding: 25px;
-                        margin-bottom: 30px;
-                        border-radius: 15px;
-                        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                        padding: 35px;
+                        margin-bottom: 40px;
+                        border-radius: 6px;
+                        box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+                        opacity: 0;
+                        transform: translateY(30px);
+                        animation: fadeUp 1s ease forwards;
                     }
 
-                    .post:hover {
-                        transform: translateY(-5px);
-                        box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+                    .post:nth-child(1) { animation-delay: 0.2s; }
+                    .post:nth-child(2) { animation-delay: 0.4s; }
+                    .post:nth-child(3) { animation-delay: 0.6s; }
+                    .post:nth-child(4) { animation-delay: 0.8s; }
+                    .post:nth-child(5) { animation-delay: 1s; }
+
+                    @keyframes fadeUp {
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
                     }
 
                     .post h2 {
@@ -162,9 +190,9 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
                     }
 
                     .post a {
-                        color: #2a5298;
-                        font-weight: bold;
                         text-decoration: none;
+                        color: #34495e;
+                        font-weight: bold;
                     }
 
                     .post a:hover {
@@ -173,47 +201,52 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
 
                     .section {
                         background: white;
-                        padding: 50px 30px;
-                        margin: 80px auto;
-                        border-radius: 20px;
+                        padding: 60px 30px;
+                        margin: 100px auto;
                         text-align: center;
                         max-width: 900px;
-                        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-                    }
-
-                    .pdf-list a {
-                        display: inline-block;
-                        margin: 10px;
-                        padding: 10px 18px;
-                        background: #2a5298;
-                        color: white;
-                        border-radius: 8px;
-                        text-decoration: none;
-                        transition: background 0.3s ease;
-                    }
-
-                    .pdf-list a:hover {
-                        background: #1e3c72;
-                    }
-
-                    footer {
-                        text-align: center;
-                        padding: 30px;
-                        background: #1e3c72;
-                        color: white;
-                        margin-top: 80px;
-                        font-size: 14px;
-                        letter-spacing: 1px;
+                        box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+                        opacity: 0;
+                        transform: translateY(40px);
+                        animation: fadeUp 1.2s ease forwards;
+                        animation-delay: 1.2s;
                     }
 
                     img {
+                        max-width: 100%;
+                        border-radius: 8px;
                         transition: transform 0.4s ease;
                     }
 
                     img:hover {
-                        transform: scale(1.03);
+                        transform: scale(1.04);
                     }
+
+                    .pdf-list a {
+                        display: block;
+                        margin: 12px 0;
+                        padding: 12px;
+                        text-decoration: none;
+                        color: #2c3e50;
+                        border-bottom: 1px solid #ddd;
+                        transition: 0.3s;
+                    }
+
+                    .pdf-list a:hover {
+                        background: #f0ece6;
+                    }
+
+                    footer {
+                        text-align: center;
+                        padding: 40px;
+                        margin-top: 100px;
+                        background: #ffffff;
+                        font-size: 14px;
+                        opacity: 0.6;
+                    }
+
                 </style>
+
             </head>
             <body>
 
@@ -239,8 +272,8 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
 
             html += """
             <div class="section">
-                <img src="/Arte_En_La_Cabeza.jpg" style="max-width:100%; border-radius:15px;">
-                <div style="margin-top:20px; font-style:italic; font-size:18px;">
+                <img src="/Arte_En_La_Cabeza.jpg">
+                <div style="margin-top:20px; font-style:italic; font-size:20px;">
                     Arte en acción
                 </div>
             </div>
