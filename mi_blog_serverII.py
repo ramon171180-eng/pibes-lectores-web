@@ -7,9 +7,7 @@ import urllib.parse
 PORT = int(os.environ.get("PORT", 8000))
 BLOG_RSS = "https://pibeslectores.blogspot.com/feeds/posts/default?alt=rss"
 
-# 🔥 Ruta base real del archivo en producción
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
 PDF_FOLDER = os.path.join(BASE_DIR, "pdfs")
 
 
@@ -17,7 +15,9 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
 
-        # --------- VISOR DE PDF ----------
+        # ==============================
+        # VISOR DE PDF
+        # ==============================
         if self.path.startswith("/ver_pdf"):
             query = urllib.parse.urlparse(self.path).query
             params = urllib.parse.parse_qs(query)
@@ -39,33 +39,34 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
                         <title>{archivo}</title>
                         <style>
                             body {{
-                                margin:0;
-                                font-family:Arial;
-                                background:#f4f4f4;
-                                text-align:center;
+                                margin: 0;
+                                font-family: 'Segoe UI', sans-serif;
+                                background: linear-gradient(135deg, #eef2f3, #dfe9f3);
+                                text-align: center;
                             }}
                             .visor-container {{
-                                width:90%;
-                                margin:30px auto;
+                                width: 90%;
+                                margin: 40px auto;
                             }}
                             iframe {{
-                                width:100%;
-                                height:80vh;
-                                border:none;
-                                border-radius:10px;
-                                box-shadow:0 4px 10px rgba(0,0,0,0.1);
+                                width: 100%;
+                                height: 85vh;
+                                border: none;
+                                border-radius: 15px;
+                                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
                             }}
                             .volver {{
-                                display:inline-block;
-                                margin:20px;
-                                padding:10px 20px;
-                                background:#2c3e50;
-                                color:white;
-                                text-decoration:none;
-                                border-radius:6px;
+                                display: inline-block;
+                                margin: 25px;
+                                padding: 12px 25px;
+                                background: #2a5298;
+                                color: white;
+                                text-decoration: none;
+                                border-radius: 8px;
+                                transition: 0.3s;
                             }}
                             .volver:hover {{
-                                background:#34495e;
+                                background: #1e3c72;
                             }}
                         </style>
                     </head>
@@ -84,7 +85,9 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
                     self.wfile.write(html.encode("utf-8"))
                     return
 
-        # --------- PÁGINA PRINCIPAL ----------
+        # ==============================
+        # PÁGINA PRINCIPAL
+        # ==============================
         if self.path == "/":
 
             self.send_response(200)
@@ -94,7 +97,10 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
             feed = feedparser.parse(BLOG_RSS)
 
             if os.path.exists(PDF_FOLDER):
-                pdf_files = [f for f in os.listdir(PDF_FOLDER) if f.endswith(".pdf")]
+                pdf_files = [
+                    f for f in os.listdir(PDF_FOLDER)
+                    if f.lower().endswith(".pdf")
+                ]
             else:
                 pdf_files = []
 
@@ -104,28 +110,109 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
                 <meta charset="UTF-8">
                 <title>Pibes Lectores - Independiente</title>
                 <style>
-                    body {font-family:Arial;background:#f4f4f4;margin:0;}
-                    header {background:#2c3e50;color:white;padding:30px;text-align:center;}
-                    .container {max-width:900px;margin:40px auto;}
-                    .post {background:white;padding:20px;margin-bottom:20px;border-radius:8px;}
+                    body {
+                        margin: 0;
+                        font-family: 'Segoe UI', sans-serif;
+                        background: linear-gradient(135deg, #eef2f3, #dfe9f3);
+                        color: #2c3e50;
+                    }
+
+                    header {
+                        background: linear-gradient(90deg, #1e3c72, #2a5298);
+                        color: white;
+                        padding: 60px 20px;
+                        text-align: center;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                    }
+
+                    header h1 {
+                        margin: 0;
+                        font-size: 42px;
+                        letter-spacing: 2px;
+                    }
+
+                    header p {
+                        opacity: 0.9;
+                        margin-top: 10px;
+                        font-style: italic;
+                    }
+
+                    .container {
+                        max-width: 900px;
+                        margin: 60px auto;
+                        padding: 0 20px;
+                    }
+
+                    .post {
+                        background: white;
+                        padding: 25px;
+                        margin-bottom: 30px;
+                        border-radius: 15px;
+                        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+                        transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    }
+
+                    .post:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+                    }
+
+                    .post h2 {
+                        margin-top: 0;
+                    }
+
+                    .post a {
+                        color: #2a5298;
+                        font-weight: bold;
+                        text-decoration: none;
+                    }
+
+                    .post a:hover {
+                        text-decoration: underline;
+                    }
+
                     .section {
-                        background:white;
-                        padding:40px 20px;
-                        margin:60px auto;
-                        text-align:center;
-                        border-radius:10px;
-                        max-width:900px;
-                        box-shadow:0 4px 10px rgba(0,0,0,0.08);
+                        background: white;
+                        padding: 50px 30px;
+                        margin: 80px auto;
+                        border-radius: 20px;
+                        text-align: center;
+                        max-width: 900px;
+                        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
                     }
+
                     .pdf-list a {
-                        display:block;
-                        margin:10px 0;
-                        text-decoration:none;
-                        color:#2980b9;
-                        font-weight:bold;
+                        display: inline-block;
+                        margin: 10px;
+                        padding: 10px 18px;
+                        background: #2a5298;
+                        color: white;
+                        border-radius: 8px;
+                        text-decoration: none;
+                        transition: background 0.3s ease;
                     }
-                    .pdf-list a:hover {text-decoration:underline;}
-                    footer {text-align:center;padding:25px;background:#2c3e50;color:white;margin-top:60px;}
+
+                    .pdf-list a:hover {
+                        background: #1e3c72;
+                    }
+
+                    footer {
+                        text-align: center;
+                        padding: 30px;
+                        background: #1e3c72;
+                        color: white;
+                        margin-top: 80px;
+                        font-size: 14px;
+                        letter-spacing: 1px;
+                    }
+
+                    img {
+                        transition: transform 0.4s ease;
+                    }
+
+                    img:hover {
+                        transform: scale(1.03);
+                    }
                 </style>
             </head>
             <body>
@@ -150,11 +237,12 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
 
             html += "</div>"
 
-            # 🔥 Imagen ahora servida correctamente
             html += """
             <div class="section">
-                <img src="/Arte_En_La_Cabeza.jpg" style="max-width:100%; border-radius:12px;">
-                <div style="margin-top:15px; font-style:italic;">Arte en acción</div>
+                <img src="/Arte_En_La_Cabeza.jpg" style="max-width:100%; border-radius:15px;">
+                <div style="margin-top:20px; font-style:italic; font-size:18px;">
+                    Arte en acción
+                </div>
             </div>
             """
 
