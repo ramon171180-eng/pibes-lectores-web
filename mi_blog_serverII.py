@@ -4,9 +4,13 @@ import feedparser
 import os
 import urllib.parse
 
-PORT = 8000
+PORT = int(os.environ.get("PORT", 8000))
 BLOG_RSS = "https://pibeslectores.blogspot.com/feeds/posts/default?alt=rss"
-PDF_FOLDER = "pdfs"
+
+# 🔥 Ruta base real del archivo en producción
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+PDF_FOLDER = os.path.join(BASE_DIR, "pdfs")
 
 
 class BlogHandler(http.server.SimpleHTTPRequestHandler):
@@ -134,7 +138,6 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
             <div class="container">
             """
 
-            # POSTS
             for entry in feed.entries[:5]:
                 html += f"""
                 <div class="post">
@@ -147,15 +150,14 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
 
             html += "</div>"
 
-            # SECCIÓN ARTÍSTICA
+            # 🔥 Imagen ahora servida correctamente
             html += """
             <div class="section">
-                <img src="Arte_En_La_Cabeza.jpg" style="max-width:100%; border-radius:12px;">
+                <img src="/Arte_En_La_Cabeza.jpg" style="max-width:100%; border-radius:12px;">
                 <div style="margin-top:15px; font-style:italic;">Arte en acción</div>
             </div>
             """
 
-            # BIBLIOTECA PDF
             html += """
             <div class="section">
                 <h2>Biblioteca en PDF</h2>
@@ -183,11 +185,9 @@ class BlogHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(html.encode("utf-8"))
             return
 
-        # Archivos estáticos (como /pdfs/archivo.pdf)
         super().do_GET()
 
 
 with socketserver.TCPServer(("0.0.0.0", PORT), BlogHandler) as httpd:
-    print(f"Servidor funcionando en http://localhost:{PORT}")
-
+    print(f"Servidor funcionando en puerto {PORT}")
     httpd.serve_forever()
